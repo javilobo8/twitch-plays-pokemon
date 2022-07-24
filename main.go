@@ -74,17 +74,21 @@ func pressKey(action *Action) {
 	}
 
 	if event != 0x00 {
+		kb.Clear()
 		kb.SetKeys(event)
 		kb.Press()
-		time.Sleep(10 * time.Millisecond)
+		time.Sleep(100 * time.Millisecond)
 		kb.Release()
+		kb.Clear()
+	} else {
+		log.Println("ERROR receiving event")
 	}
 }
 
 func OnPrivateMessage(message twitch.PrivateMessage) {
 	if strings.ToLower(config.Channel) == strings.ToLower(message.Channel) {
 		now := time.Now().UnixMilli()
-		if lastCommandTimestamp+int64(config.Interval) < now {
+		if lastCommandTimestamp+int64(config.Interval*1000) < now {
 			lastCommandTimestamp = now
 			action := findAction(message.Message)
 
