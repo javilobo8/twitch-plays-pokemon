@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"strings"
 	"time"
 
 	"github.com/gempir/go-twitch-irc/v3"
@@ -81,14 +82,14 @@ func pressKey(action *Action) {
 }
 
 func OnPrivateMessage(message twitch.PrivateMessage) {
-	if config.Channel == message.Channel {
+	if strings.ToLower(config.Channel) == strings.ToLower(message.Channel) {
 		now := time.Now().UnixMilli()
 		if lastCommandTimestamp+int64(config.Interval) < now {
 			lastCommandTimestamp = now
-			log.Println(fmt.Sprintf("%s: %s", message.User.Name, message.Message))
 			action := findAction(message.Message)
+
 			if action != nil {
-				log.Println(fmt.Sprintf("%s: %s", action.Action, action.Message))
+				log.Println(fmt.Sprintf("%s => %s", message.User.Name, action.Action))
 				pressKey(action)
 			}
 		}
@@ -100,11 +101,11 @@ func initServices() {
 	client = twitch.NewAnonymousClient()
 	client.OnPrivateMessage(OnPrivateMessage)
 	client.OnConnect(func() {
-		fmt.Println("Connected")
+		fmt.Println("[Twitch] Connected")
 	})
-	fmt.Println(fmt.Sprintf("JOIN %s", config.Channel))
+	fmt.Println(fmt.Sprintf("[Twitch] JOIN %s", config.Channel))
 	client.Join(config.Channel)
-	fmt.Println("Connecting")
+	fmt.Println("[Twitch] Connecting")
 	client.Connect()
 }
 
