@@ -23,9 +23,9 @@ type Config struct {
 }
 
 var (
-	client      *twitch.Client
-	config      *Config
-	lastCommand = time.Now().UnixMilli()
+	client               *twitch.Client
+	config               *Config
+	lastCommandTimestamp = time.Now().UnixMilli()
 )
 
 func loadConfig() {
@@ -42,50 +42,54 @@ func findAction(message string) *Action {
 	return nil
 }
 
+func pressKey(action *Action) {
+	kb, err := keybd_event.NewKeyBonding()
+	if err != nil {
+		panic(err)
+	}
+
+	event := 0x00
+	switch action.Action {
+	case "BUTTON_UP":
+		event = keybd_event.VK_D
+	case "BUTTON_DOWN":
+		event = keybd_event.VK_F
+	case "BUTTON_LEFT":
+		event = keybd_event.VK_G
+	case "BUTTON_RIGHT":
+		event = keybd_event.VK_H
+	case "BUTTON_START":
+		event = keybd_event.VK_ENTER
+	case "BUTTON_SELECT":
+		event = keybd_event.VK_BACKSPACE
+	case "BUTTON_A":
+		event = keybd_event.VK_Z
+	case "BUTTON_B":
+		event = keybd_event.VK_X
+	case "BUTTON_L":
+		event = keybd_event.VK_A
+	case "BUTTON_R":
+		event = keybd_event.VK_S
+	}
+
+	if event != 0x00 {
+		kb.SetKeys(event)
+		kb.Press()
+		time.Sleep(10 * time.Millisecond)
+		kb.Release()
+	}
+}
+
 func OnPrivateMessage(message twitch.PrivateMessage) {
 	if config.Channel == message.Channel {
 		now := time.Now().UnixMilli()
-		if lastCommand+int64(config.Interval) < now {
-			lastCommand = now
+		if lastCommandTimestamp+int64(config.Interval) < now {
+			lastCommandTimestamp = now
 			log.Println(fmt.Sprintf("%s: %s", message.User.Name, message.Message))
 			action := findAction(message.Message)
 			if action != nil {
 				log.Println(fmt.Sprintf("%s: %s", action.Action, action.Message))
-				kb, err := keybd_event.NewKeyBonding()
-				if err != nil {
-					panic(err)
-				}
-
-				event := 0x00
-				switch action.Action {
-				case "BUTTON_UP":
-					event = keybd_event.VK_D
-				case "BUTTON_DOWN":
-					event = keybd_event.VK_F
-				case "BUTTON_LEFT":
-					event = keybd_event.VK_G
-				case "BUTTON_RIGHT":
-					event = keybd_event.VK_H
-				case "BUTTON_START":
-					event = keybd_event.VK_ENTER
-				case "BUTTON_SELECT":
-					event = keybd_event.VK_BACKSPACE
-				case "BUTTON_A":
-					event = keybd_event.VK_Z
-				case "BUTTON_B":
-					event = keybd_event.VK_X
-				case "BUTTON_L":
-					event = keybd_event.VK_A
-				case "BUTTON_R":
-					event = keybd_event.VK_S
-				}
-
-				if event != 0x00 {
-					kb.SetKeys(event)
-					kb.Press()
-					time.Sleep(10 * time.Millisecond)
-					kb.Release()
-				}
+				pressKey(action)
 			}
 		}
 	}

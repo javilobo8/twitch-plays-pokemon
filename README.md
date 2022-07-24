@@ -1,5 +1,10 @@
 # Emulator
-Use default keybinding settings
+Bind:
+
+* Up - **D**
+* Down - **F**
+* Left - **G**
+* Right - **H**
 
 [Download Link](https://www.emulator-zone.com/doc.php/gba/vboyadvance.html)
 
@@ -22,4 +27,10 @@ Use default keybinding settings
     { "action": "BUTTON_R", "message": "R" }
   ]
 }
+```
+
+# Build
+
+```
+go build -o tpp.exe .\main.go
 ```
