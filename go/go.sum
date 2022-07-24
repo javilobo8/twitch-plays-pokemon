@@ -1,8 +1,0 @@
-github.com/gempir/go-twitch-irc/v3 v3.2.0 h1:ENhsa7RgBE1GMmDqe0iMkvcSYfgw6ZsXilt+sAg32/U=
-github.com/gempir/go-twitch-irc/v3 v3.2.0/go.mod h1:/W9KZIiyizVecp4PEb7kc4AlIyXKiCmvlXrzlpPUytU=
-github.com/micmonay/keybd_event v1.1.1 h1:rv7omwXWYL9Lgf3PUq6uBgJI2k1yGkL/GD6dxc6nmSs=
-github.com/micmonay/keybd_event v1.1.1/go.mod h1:CGMWMDNgsfPljzrAWoybUOSKafQPZpv+rLigt2LzNGI=
-github.com/stephen-fox/user32util v0.3.1 h1:QXaR64G8e6lRjyhvTZV6dyDapTuG/g78JlLGCkRMkxg=
-github.com/stephen-fox/user32util v0.3.1/go.mod h1:F5atFcQh+BH0YHU96Y6L2lMVCBiCTNsUYfYliyJ1JXg=
-golang.org/x/sys v0.0.0-20190530182044-ad28b68e88f1 h1:R4dVlxdmKenVdMRS/tTspEpSTRWINYrHD8ySIU9yCIU=
-golang.org/x/sys v0.0.0-20190530182044-ad28b68e88f1/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
