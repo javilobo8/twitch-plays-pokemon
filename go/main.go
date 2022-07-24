@@ -45,7 +45,7 @@ func findAction(message string) *Action {
 func OnPrivateMessage(message twitch.PrivateMessage) {
 	if config.Channel == message.Channel {
 		now := time.Now().UnixMilli()
-		if lastCommand+int64(config.Interval*1000) < now {
+		if lastCommand+int64(config.Interval) < now {
 			lastCommand = now
 			log.Println(fmt.Sprintf("%s: %s", message.User.Name, message.Message))
 			action := findAction(message.Message)
@@ -55,31 +55,36 @@ func OnPrivateMessage(message twitch.PrivateMessage) {
 				if err != nil {
 					panic(err)
 				}
+				event := 0x00
 				switch action.Action {
 				case "BUTTON_UP":
-					kb.SetKeys(keybd_event.VK_UP)
+					event = keybd_event.VK_UP // Not working
 				case "BUTTON_DOWN":
-					kb.SetKeys(keybd_event.VK_DOWN)
+					event = keybd_event.VK_DOWN // Not working
 				case "BUTTON_LEFT":
-					kb.SetKeys(keybd_event.VK_LEFT)
+					event = keybd_event.VK_LEFT // Not working
 				case "BUTTON_RIGHT":
-					kb.SetKeys(keybd_event.VK_RIGHT)
+					event = keybd_event.VK_RIGHT // Not working
 				case "BUTTON_START":
-					kb.SetKeys(keybd_event.VK_ENTER)
+					event = keybd_event.VK_ENTER
 				case "BUTTON_SELECT":
-					kb.SetKeys(keybd_event.VK_BACKSPACE)
+					event = keybd_event.VK_BACKSPACE
 				case "BUTTON_A":
-					kb.SetKeys(keybd_event.VK_Z)
+					event = keybd_event.VK_Z
 				case "BUTTON_B":
-					kb.SetKeys(keybd_event.VK_X)
+					event = keybd_event.VK_X
 				case "BUTTON_L":
-					kb.SetKeys(keybd_event.VK_A)
+					event = keybd_event.VK_A
 				case "BUTTON_R":
-					kb.SetKeys(keybd_event.VK_S)
+					event = keybd_event.VK_S
 				}
-				kb.Press()
-				time.Sleep(10 * time.Millisecond)
-				kb.Release()
+
+				if event != 0x00 {
+					kb.SetKeys(event)
+					kb.Press()
+					time.Sleep(10 * time.Millisecond)
+					kb.Release()
+				}
 			}
 		}
 	}

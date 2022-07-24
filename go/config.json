@@ -10,7 +10,7 @@
     { "event": "VK_BACKSPACE", "action": "BUTTON_SELECT", "message": "select" },
     { "event": "VK_Z", "action": "BUTTON_A", "message": "a" },
     { "event": "VK_X", "action": "BUTTON_B", "message": "b" },
-    { "event": "VK_A", "action": "BUTTON_L", "message": "L" },
-    { "event": "VK_S", "action": "BUTTON_R", "message": "R" }
+    { "event": "VK_A", "action": "BUTTON_L", "message": "l" },
+    { "event": "VK_S", "action": "BUTTON_R", "message": "r" }
   ]
 }
